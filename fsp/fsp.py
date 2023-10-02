@@ -88,7 +88,7 @@ def Feature_Space_Partition(X, y, opt=None):
     rmH_list = []
     H_list = []
     #While x is not empty
-    random.seed(1)
+    #random.seed(1)
     while X.shape[0] > 0:
         print("X is not empty")
         print(f'X.shape[0]: {X.shape[0]}')
@@ -119,7 +119,7 @@ def Feature_Space_Partition(X, y, opt=None):
         #Segment dataset X into K clusters using k-means
         #rand = random.randint(0,10000)
 
-        kmeans = KMeans(n_clusters=k, max_iter= 1000, n_init='auto').fit(X)
+        kmeans = KMeans(n_clusters=k, max_iter= 1000, n_init='auto',random_state=1).fit(X)
         idx = kmeans.labels_
         C = kmeans.cluster_centers_
         print(f'C: {C}')
@@ -200,9 +200,10 @@ def Feature_Space_Partition(X, y, opt=None):
             print("There is homogenous region remove it")
             rmCidx = np.where(vec)[0]
             print(f'rmCidx: {rmCidx}')
-            print(f'Indices: {Indices[rmCidx[0]]}')
-            rmXidx = np.array(Indices[rmCidx[0]])
-            rmC = C[rmCidx,:]
+            for aux in rmCidx:
+                rmXidx = np.concatenate((rmXidx, Indices[aux]))
+                print(f'rmXidx: {rmXidx}')
+            rmC = C[rmCidx, :]
             rmXidx = rmXidx.astype(int)
             print(f'rmXidx: {rmXidx}')
             
